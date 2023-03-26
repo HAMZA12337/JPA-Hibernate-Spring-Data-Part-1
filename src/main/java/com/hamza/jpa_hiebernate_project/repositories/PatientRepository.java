@@ -10,21 +10,22 @@ import org.springframework.data.repository.query.Param;
 import java.util.Date;
 import java.util.List;
 
-public interface PatientRepository extends JpaRepository<Patient,Long> {
+public interface PatientRepository extends JpaRepository<Patient, Long> {
     // long as sencod parameter because the id of patient is long
 
 
     // findByMalade= select from patient where malade=m
     public List<Patient> findByMalade(boolean m);
-    public Page<Patient> findByMalade(boolean m ,Pageable pageable);
+
+    public Page<Patient> findByMalade(boolean m, Pageable pageable);
 
     // la liste des personne qui ont score >45
 
-     public List<Patient> findByScoreGreaterThan(int score);
+    public List<Patient> findByScoreGreaterThan(int score);
 
-     // La liste des personne qui ont score >100 and malade = false
+    // La liste des personne qui ont score >100 and malade = false
 
-    public List<Patient> findByMaladeAndScoreGreaterThan(boolean etat,int score);
+    public List<Patient> findByMaladeAndScoreGreaterThan(boolean etat, int score);
 
     // On peut minimiser cette methode using
 
@@ -39,8 +40,7 @@ public interface PatientRepository extends JpaRepository<Patient,Long> {
     // mais on peut faire mieux on utilisant annotation query
 
     @Query("select p from Patient p where p.dateNaissance between :x and :y or p.nom like :z ")
-    List<Patient> chercherPatientCondition(@Param("x") Date d1, @Param("y") Date d2,@Param("z") String name);
-
+    List<Patient> chercherPatientCondition(@Param("x") Date d1, @Param("y") Date d2, @Param("z") String name);
 
 
 }

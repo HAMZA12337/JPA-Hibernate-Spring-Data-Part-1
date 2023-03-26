@@ -18,4 +18,4 @@ Activité Pratique N°3 : JPA Hibernate Spring Data
     - Mettre à jour un patient
     - supprimer un patient
 7. Migrer de H2 Database vers MySQL!
-8. [pic.png](pic.png)
+<img src="picture1.jpg"/>
