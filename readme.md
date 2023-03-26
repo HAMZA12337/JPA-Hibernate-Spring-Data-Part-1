@@ -1,5 +1,5 @@
 Activité Pratique N°3 : JPA Hibernate Spring Data
-
+<img src="Picture1.jpg"/>
 1. Installer IntelliJ Ultimate
 2. Créer un projet Spring Initializer avec les dépendances JPA, H2, Spring Web et Lombock
 3. Créer l'entité JPA Patient ayant les attributs :
@@ -18,4 +18,3 @@ Activité Pratique N°3 : JPA Hibernate Spring Data
     - Mettre à jour un patient
     - supprimer un patient
 7. Migrer de H2 Database vers MySQL!
-<img src="Picture1.jpg"/>
