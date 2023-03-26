@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -31,18 +33,25 @@ public class JpaHiebernateProjectApplication implements CommandLineRunner {
         patientRepository.save(
                 new Patient(null, "hakim", new Date(), true, 103));
 
+
+// insert 100 patient
+        for(int i=0;i<100;i++){
+            patientRepository.save(
+                    new Patient(null, "hamza", new Date(), false, (int)(Math.random()*100)));
+        }
+
         // display list of patient
 
         List<Patient> patients = patientRepository.findAll();
 
-        patients.forEach(p -> {
-            System.out.println("================================");
-            System.out.println(p.getId());
-            System.out.println(p.getNom());
-            System.out.println(p.getScore());
-            System.out.println(p.getDateNaissance());
-            System.out.println(p.isMalade());
-        });
+//        patients.forEach(p -> {
+//            System.out.println("================================");
+//            System.out.println(p.getId());
+//            System.out.println(p.getNom());
+//            System.out.println(p.getScore());
+//            System.out.println(p.getDateNaissance());
+//            System.out.println(p.isMalade());
+//        });
 
 
 // Look for a patient
@@ -71,12 +80,91 @@ public class JpaHiebernateProjectApplication implements CommandLineRunner {
 
         // insertion de 200 enregistremets a la fois
 
-        for(int i=0;i<100;i++){
-            patientRepository.save(
-                    new Patient(null, "hamza", new Date(), false, (int)(Math.random()*100)));
-        }
+
 
         // how do pagination when we try to get all data
+        Page<Patient> patientList= patientRepository.findAll(PageRequest.of(0,5));
+        System.out.println("==============================================>");
+        System.out.println("Total pages ="+patientList.getTotalPages());
+        System.out.println("Total elements ="+patientList.getTotalElements());
+        System.out.println("Current pages="+patientList.getNumber());
+        patientList.forEach(p -> {
+            System.out.println("================================");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getScore());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+        });
+
+
+// get list of patient where malade = true
+
+        List<Patient> patientMalade=patientRepository.findByMalade(true);
+
+        System.out.println("=============== La liste des personnes qui sont malade=================");
+        patientMalade.forEach(p -> {
+            System.out.println("================================");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getScore());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+        });
+
+// get list of patient where malade = true with pagination
+
+        Page<Patient> patientMaladePagination=patientRepository.findByMalade(true,PageRequest.of(0,5));
+
+        patientMaladePagination.forEach(p -> {
+            System.out.println("================================");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getScore());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+        });
+//================================================= Implementation de la methode a liste des personne qui ont score >45
+
+        List<Patient> patientScore=patientRepository.findByScoreGreaterThan(45);
+        System.out.println("================================ Score >45==========================");
+        patientScore.forEach(p -> {
+            System.out.println("================================");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getScore());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+        });
+
+//=================================================   La liste des personne qui ont score >100 and malade = false
+
+        List<Patient> patientScoreMalade=patientRepository.findByMaladeAndScoreGreaterThan(false,100);
+        System.out.println("================================ Score >100 and malade = flase ==========================");
+        patientScoreMalade.forEach(p -> {
+            System.out.println("================================");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getScore());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+        });
+
+
+
+//=================================================  Get patients using query annotation
+
+        List<Patient> patientQuery=patientRepository.chercherPatientCondition(new Date("10/12/2001"),new Date(),"hamza" );
+        System.out.println("================================ Get patients using query annotation ==========================");
+        patientQuery.forEach(p -> {
+            System.out.println("================================");
+            System.out.println(p.getId());
+            System.out.println(p.getNom());
+            System.out.println(p.getScore());
+            System.out.println(p.getDateNaissance());
+            System.out.println(p.isMalade());
+        });
+
 
 
 
